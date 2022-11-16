@@ -114,14 +114,9 @@ const LangAttributeButton = ( props ) => {
 							togglePopover()
 						} }
 					/>
-					<p>
-						<ExternalLink href="{ __( 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang', 'lang-attribute' ) }">Documentation on the lang attribute</ExternalLink>
-					</p>
-/*
-					<p>
+					<p class="lang-attribute-info">
 						<em>{ __( 'Should be a valid language tag, like "en" or "fr".', 'lang-attribute' ) }</em>
 					</p>
-*/
 				</Popover>
 			) }
 		</>
