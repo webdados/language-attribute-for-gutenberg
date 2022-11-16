@@ -34,7 +34,7 @@ import { __ } from '@wordpress/i18n';
 import './index.scss';
 
 import {  BlockControls } from '@wordpress/block-editor';
-import { TextControl, Button, Popover, ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import { TextControl, Button, Popover, ToolbarGroup, ToolbarButton, ExternalLink } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { applyFormat, removeFormat, useAnchorRef } from '@wordpress/rich-text';
 import { ENTER } from '@wordpress/keycodes';
