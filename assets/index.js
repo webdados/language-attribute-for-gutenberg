@@ -56,7 +56,7 @@ const LangAttributeButton = ( props ) => {
 				<ToolbarGroup>
 					<ToolbarButton
 						icon="translation"
-						label={ __( 'Lang attribute', 'lag' ) }
+						label={ __( 'Lang attribute', 'lang-attribute-for-gutenberg' ) }
 						onClick={ () => {
 							if ( isActive ) {
 								onChange( removeFormat( value, 'lag/format-lang-attribute' ) );
@@ -76,7 +76,7 @@ const LangAttributeButton = ( props ) => {
 					position="bottom center"
 				>
 					<TextControl
-						label={ __( 'Lang attribute', 'lag' ) }
+						label={ __( 'Lang attribute', 'lang-attribute-for-gutenberg' ) }
 						value={ lang }
 						onChange={ lang => setLang( lang ) }
 						// TODO : To be the same as the onclick on button, but not working there
@@ -100,7 +100,7 @@ const LangAttributeButton = ( props ) => {
 					/>
 					<Button
 						isPrimary
-						text={ __( 'Apply', 'lag' ) }
+						text={ __( 'Apply', 'lang-attribute-for-gutenberg' ) }
 						onClick={ () => {
 							onChange(
 								applyFormat( value, {
@@ -125,5 +125,5 @@ wp.richText.registerFormatType( 'lag/format-lang-attribute', {
 	edit     : LangAttributeButton,
 	tagName  : 'span',
 	icon     : 'translation',
-	title    : __( 'Lang attribute', 'lag' ),
+	title    : __( 'Lang attribute', 'lang-attribute-for-gutenberg' ),
 } );
