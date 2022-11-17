@@ -34,10 +34,11 @@ import { __ } from '@wordpress/i18n';
 import './index.scss';
 
 import {  BlockControls } from '@wordpress/block-editor';
-import { TextControl, Button, Popover, ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import { TextControl, Button, Popover, ToolbarGroup, ToolbarButton, ExternalLink } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { applyFormat, removeFormat, useAnchorRef } from '@wordpress/rich-text';
 import { ENTER } from '@wordpress/keycodes';
+
 
 const LangAttributeButton = ( props ) => {
 	const { contentRef, isActive, onChange, value } = props;
@@ -56,7 +57,7 @@ const LangAttributeButton = ( props ) => {
 				<ToolbarGroup>
 					<ToolbarButton
 						icon="translation"
-						label={ __( 'Lang attribute', 'lag' ) }
+						label={ __( 'Lang attribute', 'lang-attribute' ) }
 						onClick={ () => {
 							if ( isActive ) {
 								onChange( removeFormat( value, 'lag/format-lang-attribute' ) );
@@ -76,7 +77,7 @@ const LangAttributeButton = ( props ) => {
 					position="bottom center"
 				>
 					<TextControl
-						label={ __( 'Lang attribute', 'lag' ) }
+						label={ __( 'Lang attribute', 'lang-attribute' ) }
 						value={ lang }
 						onChange={ lang => setLang( lang ) }
 						// TODO : To be the same as the onclick on button, but not working there
@@ -98,9 +99,12 @@ const LangAttributeButton = ( props ) => {
 						// 	}
 						// } }
 					/>
+					<p class="lang-attribute-info">
+						<em>{ __( 'Should be a valid language tag, like "en" or "fr".', 'lang-attribute' ) }</em>
+					</p>
 					<Button
 						isPrimary
-						text={ __( 'Apply', 'lag' ) }
+						text={ __( 'Apply', 'lang-attribute' ) }
 						onClick={ () => {
 							onChange(
 								applyFormat( value, {
@@ -125,5 +129,5 @@ wp.richText.registerFormatType( 'lag/format-lang-attribute', {
 	edit     : LangAttributeButton,
 	tagName  : 'span',
 	icon     : 'translation',
-	title    : __( 'Lang attribute', 'lag' ),
+	title    : __( 'Lang attribute', 'lang-attribute' ),
 } );
