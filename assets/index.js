@@ -34,7 +34,7 @@ import { __ } from '@wordpress/i18n';
 import './index.scss';
 
 import { BlockControls, RichTextToolbarButton } from '@wordpress/block-editor';
-import { TextControl, Button, Popover } from '@wordpress/components';
+import { TextControl, SelectControl, Button, Popover } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { registerFormatType, applyFormat, removeFormat, useAnchorRef } from '@wordpress/rich-text';
 import { ENTER } from '@wordpress/keycodes';
@@ -44,10 +44,13 @@ const LangAttributeButton = ( props ) => {
 	const anchorRef = useAnchorRef( { ref: contentRef, value } );
 	
 	const [ lang, setLang ] = useState( '' );
+    const [ dir, setDir ] = useState( 'ltr' );
+
 	const [ isPopoverVisible, setIsPopoverVisible ] = useState( false );
 	const togglePopover = () => {
 		setIsPopoverVisible( ( state ) => ! state );
 		setLang( '' )
+		setDir( 'ltr' )
 	};
 
 	return (
@@ -76,28 +79,20 @@ const LangAttributeButton = ( props ) => {
 						label={ __( 'Lang attribute', 'lang-attribute' ) }
 						value={ lang }
 						onChange={ lang => setLang( lang ) }
-						// TODO : To be the same as the onclick on button, but not working there
-						// onKeyDown={ ( event ) => {
-						// 	const { keyCode } = event;
-
-						// 	if ( keyCode === ENTER ) {
-						// 		console.log('ENTER')
-						// 		// applyFormatWithLang()
-						// 		onChange(
-						// 			applyFormat( value, {
-						// 				type: 'lang-attribute/format-lang-attribute',
-						// 				attributes: {
-						// 					lang: lang
-						// 				}
-						// 			} )
-						// 		)
-						// 		togglePopover()
-						// 	}
-						// } }
 					/>
 					<p class="lang-attribute-info">
 						<em>{ __( 'Should be a valid lang attribute, like "en" or "fr".', 'lang-attribute' ) }</em>
 					</p>
+
+					<SelectControl
+						label={ __( 'Text direction', 'lang-attribute' ) }
+						value={ dir }
+						options={[
+							{ label: __( 'Left to right', 'lang-attribute' ), value: 'ltr' },
+							{ label: __( 'Right to left', 'lang-attribute' ), value: 'rtl' },
+						]}
+						onChange={ dir => setDir( dir ) }
+					/>
 					<Button
 						isPrimary
 						text={ __( 'Apply', 'lang-attribute' ) }
@@ -106,7 +101,8 @@ const LangAttributeButton = ( props ) => {
 								applyFormat( value, {
 									type: 'lang-attribute/format-lang-attribute',
 									attributes: {
-										lang: lang
+										lang: lang,
+										dir: dir
 									}
 								} )
 							)
