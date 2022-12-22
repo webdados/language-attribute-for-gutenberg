@@ -3,7 +3,7 @@ Contributors: guillaumeturpin, audrasjb, whodunitagency
 Tags: lang, language, accessibility, block editor
 Requires at least: 5.9
 Tested up to: 6.1
-Stable tag: 0.2.2
+Stable tag: 0.3
 Requires PHP: 7.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -38,6 +38,10 @@ This is especially important when switching between languages that read from lef
 2. Use the "Language attribute" toolbar button, available on any text content added in the block editor.
 
 == Changelog ==
+
+= 0.3 =
+
+* Added support for the `dir` attribute.
 
 = 0.2.2 =
 

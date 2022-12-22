@@ -3,7 +3,7 @@
  * Plugin Name: Lang Attribute for the Block Editor
  * Plugin URI: https://whodunit.fr/attribut-lang-pour-gutenberg-plugin
  * Description: Add lang attribute to the text formatting toolbar in the block editor.
- * Version: 0.2.2
+ * Version: 0.3
  * Author: Guillaume Turpin, Jb Audras, Whodunit Agency
  * Author URI: https://whodunit.fr
  * text-domain: lang-attribute
