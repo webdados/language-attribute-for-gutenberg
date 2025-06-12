@@ -1,43 +1,14 @@
 import { __ } from '@wordpress/i18n';
 
-// PART : Screen reader text format
-// ( function( wp ) {
-// 	// Custom button for the editor toolbar
-// 	let customButton = function( props ) {
-// 		return wp.element.createElement(
-// 			wp.editor.RichTextToolbarButton, {
-// 				icon    : 'tablet',
-// 				title   : __( 'Screen Reader Text', 'lang-attribute' ),
-// 				isActive: props.isActive,
-// 				onClick : function() {
-// 					console.log( 'Custom Button Clicked!' );
-// 					props.onChange( wp.richText.toggleFormat(
-// 						props.value,
-// 						{ type: 'lang-attribute/format-screen-reader-text' }
-// 					) );
-// 				}
-// 			}
-// 		)
-// 	}
-	
-// 	// Register the screen reader format type used with the custom button on richText component
-// 	wp.richText.registerFormatType( 'lang-attribute/format-screen-reader-text', {
-// 		title    : __( 'Screen Reader Text', 'lang-attribute' ),
-// 		tagName  : 'span',
-// 		className: 'screen-reader-text',
-// 		edit     : customButton
-// 	} )
-// } )( window.wp )
-
-
-
 import './index.scss';
 
-import { BlockControls, RichTextToolbarButton } from '@wordpress/block-editor';
-import { TextControl, SelectControl, Button, Popover } from '@wordpress/components';
+import { BlockControls, RichTextToolbarButton, InspectorControls } from '@wordpress/block-editor';
+import { TextControl, SelectControl, Button, Popover, PanelBody } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { registerFormatType, applyFormat, removeFormat, useAnchorRef } from '@wordpress/rich-text';
 import { ENTER } from '@wordpress/keycodes';
+import { createHigherOrderComponent } from '@wordpress/compose';
+import { addFilter } from '@wordpress/hooks';
 
 const LangAttributeButton = ( props ) => {
 	const { contentRef, isActive, onChange, value } = props;
@@ -123,3 +94,82 @@ registerFormatType( 'lang-attribute/format-lang-attribute', {
 	icon     : 'translation',
 	title    : __( 'Lang attribute', 'lang-attribute' ),
 } );
+
+
+/* GROUP BLOCK THINGY */
+
+// Add language attributes to Group block
+const addLangAttributesToGroupBlock = createHigherOrderComponent( ( BlockEdit ) => {
+	return ( props ) => {
+		// Only target the Group block (and its variations) as well as the Column block
+		if ( props.name !== 'core/group' && props.name !== 'core/column' ) {
+		  return <BlockEdit { ...props } />;
+		}
+	  
+		const { attributes, setAttributes } = props;
+		
+		// Get existing lang and dir attributes or set default values
+		const lang = attributes.lang || '';
+		const dir = attributes.dir || 'ltr';
+	  
+		return (
+			<>
+				<BlockEdit { ...props } />
+				<InspectorControls>
+					<PanelBody
+						title={ __( 'Language Settings', 'lang-attribute' ) }
+						initialOpen={ true }
+					>
+						<TextControl
+							label={ __( 'Language Code', 'lang-attribute' ) }
+							value={ lang }
+							onChange={ ( value ) => setAttributes( { lang: value } ) }
+							help={ __( 'Valid language code, like "en" or "fr".', 'lang-attribute' ) }
+						/>
+						<SelectControl
+							label={ __( 'Text Direction', 'lang-attribute' ) }
+							value={ dir }
+							options={[
+								{ label: __( 'Left to right', 'lang-attribute' ), value: 'ltr' },
+								{ label: __( 'Right to left', 'lang-attribute' ), value: 'rtl' },
+							]}
+							onChange={ ( value ) => setAttributes( { dir: value } ) }
+						/>
+					</PanelBody>
+				</InspectorControls>
+			</>
+		);
+	};
+}, 'addLangAttributesToGroupBlock' );
+
+// Register the filters
+addFilter(
+	'editor.BlockEdit',
+	'lang-attribute/add-lang-attributes-to-group-block',
+	addLangAttributesToGroupBlock
+);
+
+function addListBlockClassName( settings, name ) {
+	if ( name === 'core/group' || name === 'core/column' ) {
+		// Add custom attributes for lang and dir
+		settings.attributes = {
+			...settings.attributes,
+			lang: {
+				type: 'string',
+				default: '',
+			},
+			dir: {
+				type: 'string',
+				default: 'ltr',
+			},
+		};
+	}
+	return settings;
+
+}
+
+wp.hooks.addFilter(
+	'blocks.registerBlockType',
+	'lang-attribute/add-list-block-class-name',
+	addListBlockClassName
+);
